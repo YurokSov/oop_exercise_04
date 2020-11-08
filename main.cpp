@@ -5,25 +5,20 @@
 
 namespace figs {
     const double PI = 3.14159265;
-
     template<typename T>
     using vertex = std::pair<T, T>;
-
     template<typename T>
     struct Triangle {
         vertex<T> vertices[3];
     };
-
     template<typename T>
     struct Square {
         vertex<T> vertices[4];
     };
-
     template<typename T>
     struct Rectangle {
         vertex<T> vertices[4];
     };
-
     template<typename T, template<typename> typename F>
     void Read(F<T> &f) {
         double alpha = 0;
@@ -56,13 +51,11 @@ namespace figs {
             }
         }
     }
-
     template<typename T>
     T dist(const vertex<T> &a, const vertex<T> &b) {
         return static_cast<T>(sqrt(
                 (a.first - b.first) * (a.first - b.first) + (a.second - b.second) * (a.second - b.second)));
     }
-
     template<typename T, template<typename> typename F>
     typename std::enable_if<std::is_same<F<T>, Rectangle<T>>::value>::type PrintFigure(F<T> &a) {
         std::cout << "Rectangle: ";
@@ -71,7 +64,6 @@ namespace figs {
         }
         std::cout << std::endl;
     }
-
     template<typename T, template<typename> typename F>
     typename std::enable_if<std::is_same<F<T>, Square<T>>::value>::type PrintFigure(F<T> &a) {
         std::cout << "Square: ";
@@ -80,7 +72,6 @@ namespace figs {
         }
         std::cout << std::endl;
     }
-
     template<typename T, template<typename> typename F>
     typename std::enable_if<std::is_same<F<T>, Triangle<T>>::value>::type PrintFigure(F<T> &a) {
         std::cout << "Triangle: ";
@@ -89,22 +80,18 @@ namespace figs {
         }
         std::cout << std::endl;
     }
-
     template<typename T>
     void PrintFigure(T &a) {
         std::cout << "Bad Figure!\n";
     };
-
     template<typename T, template<typename> typename F>
     typename std::enable_if<std::is_same<F<T>, Rectangle<T>>::value, double>::type GetFigureArea(F<T> &a) {
         return dist(a.vertices[0], a.vertices[1]) * dist(a.vertices[2], a.vertices[3]);
     }
-
     template<typename T, template<typename> typename F>
     typename std::enable_if<std::is_same<F<T>, Square<T>>::value, double>::type GetFigureArea(F<T> &a) {
         return dist(a.vertices[0], a.vertices[1]) * dist(a.vertices[2], a.vertices[3]);
     }
-
     template<typename T, template<typename> typename F>
     typename std::enable_if<std::is_same<F<T>, Triangle<T>>::value, double>::type GetFigureArea(F<T> &a) {
         T A = dist(a.vertices[0], a.vertices[1]);
@@ -114,23 +101,19 @@ namespace figs {
         double x = p * (p - A) * (p - B) * (p - C);
         return sqrt(x);
     }
-
     template<typename T>
     double GetFigureArea(T &a) {
         //std::cout << "Bad Figure: ";
         return -1;
     }
-
     template<typename F, size_t index>
     typename std::enable_if<index < 0, double>::type ProcessTuple(F &t) {
         return 0;
     }
-
     template<typename F, size_t index>
     typename std::enable_if<index >= std::tuple_size<F>::value, double>::type ProcessTuple(F &t) {
         return 0;
     }
-
     template<typename F, size_t index = 0>
     typename std::enable_if<index < std::tuple_size<F>::value, double>::type ProcessTuple(F &t) {
         auto v = std::get<index>(t);
@@ -143,7 +126,6 @@ namespace figs {
         }
         return area + ProcessTuple<F, index + 1>(t);
     }
-
 }
 
 int main() {
